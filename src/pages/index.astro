@@ -5,6 +5,8 @@ import CourseCard from '../components/CourseCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Testimonials from '../components/Testimonials.astro';
 import CTA from '../components/CTA.astro';
+import LiveCode from '../components/LiveCode.astro';
+import CodeRain from '../components/CodeRain.astro';
 import { getCollection } from 'astro:content';
 import { site, batches } from '../config/site';
 
@@ -32,88 +34,74 @@ const topics = [
 ---
 <Base title={site.name}>
   <!-- Hero -->
-  <section class="relative overflow-hidden bg-navy-950 text-white">
+  <section class="relative overflow-hidden bg-base text-white">
+    <CodeRain />
     <div class="grid-bg absolute inset-0" aria-hidden="true"></div>
-    <div class="absolute -left-40 top-20 h-96 w-96 rounded-full bg-lab-500/20 blur-3xl" aria-hidden="true"></div>
-    <div class="absolute -right-32 -bottom-40 h-96 w-96 rounded-full bg-navy-600/60 blur-3xl" aria-hidden="true"></div>
+    <div class="animate-aurora absolute -left-40 top-10 h-[32rem] w-[32rem] rounded-full bg-accent-600/30 blur-3xl" aria-hidden="true"></div>
+    <div class="animate-aurora absolute -right-40 bottom-0 h-[28rem] w-[28rem] rounded-full bg-lab-600/25 blur-3xl" style="animation-delay:-7s" aria-hidden="true"></div>
     <div class="container-x relative grid items-center gap-12 py-20 lg:grid-cols-12 lg:py-28">
-      <div class="min-w-0 lg:col-span-7">
+      <div class="min-w-0 lg:col-span-6">
         {nextBatch && (
-          <a href="/batches" class="eyebrow-dark hover:bg-lab-400/20">
+          <a href="/batches" class="eyebrow hover:bg-accent-500/20">
             <span class="h-2 w-2 animate-pulse rounded-full bg-lab-400"></span>
-            Next batch starts {fmt(nextBatch.starts)}
+            Next live batch starts {fmt(nextBatch.starts)}
           </a>
         )}
-        <h1 class="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-          Learn QA the way it is <span class="text-lab-400">actually done.</span>
+        <h1 class="mt-6 text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-6xl">
+          Learn QA the way it is <span class="text-gradient">actually done.</span>
         </h1>
-        <p class="mt-6 max-w-xl text-lg text-slate-300">
-          A free library, free recordings and live courses for testers at every level. Manual, automation with Playwright and TypeScript, API, database, performance, and AI for QA. You build a real application and a real framework, from scratch, with people who have shipped them.
+        <p class="mt-6 max-w-xl text-lg text-muted-strong">
+          A free library, free recordings and live courses for testers at every level. Manual, Playwright + TypeScript automation, API, database, performance, and AI for QA. You build a real application and a real framework from scratch, with people who have shipped them.
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href="/library" class="btn-primary">Start learning free</a>
           <a href="/courses" class="btn-ghost-light">Explore live courses</a>
         </div>
         <dl class="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8 text-sm">
-          <div><dt class="text-slate-400">Disciplines covered</dt><dd class="mt-1 text-2xl font-bold">6</dd></div>
-          <div><dt class="text-slate-400">Live sessions a batch</dt><dd class="mt-1 text-2xl font-bold">Up to 24</dd></div>
-          <div><dt class="text-slate-400">Learners</dt><dd class="mt-1 text-2xl font-bold">Global</dd></div>
+          <div><dt class="text-dim">Disciplines</dt><dd class="mt-1 font-display text-2xl font-bold">6</dd></div>
+          <div><dt class="text-dim">Live sessions / batch</dt><dd class="mt-1 font-display text-2xl font-bold">Up to 24</dd></div>
+          <div><dt class="text-dim">Learners</dt><dd class="mt-1 font-display text-2xl font-bold">Global</dd></div>
         </dl>
       </div>
-      <div class="min-w-0 lg:col-span-5">
-        <div class="rounded-2xl border border-white/10 bg-navy-900/80 p-1 shadow-glow backdrop-blur">
-          <div class="flex items-center gap-1.5 px-3 py-2">
-            <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span><span class="h-2.5 w-2.5 rounded-full bg-amber-400/80"></span><span class="h-2.5 w-2.5 rounded-full bg-lab-400/80"></span>
-            <span class="ml-3 font-mono text-xs text-slate-400">tests/checkout.spec.ts</span>
-          </div>
-<pre class="overflow-x-auto rounded-xl bg-navy-950 p-4 font-mono text-[13px] leading-relaxed text-slate-200"><code><span class="text-purple-300">import</span> {'{'} test, expect {'}'} <span class="text-purple-300">from</span> <span class="text-lab-300">'@playwright/test'</span>;
-
-test(<span class="text-lab-300">'guest can complete checkout'</span>, <span class="text-purple-300">async</span> ({'{'} page, api {'}'}) =&gt; {'{'}
-  <span class="text-purple-300">const</span> product = <span class="text-purple-300">await</span> api.createProduct({'{'} price: <span class="text-amber-300">49</span> {'}'});
-  <span class="text-purple-300">await</span> page.goto(<span class="text-lab-300">`/p/${'{'}product.slug{'}'}`</span>);
-  <span class="text-purple-300">await</span> page.getByRole(<span class="text-lab-300">'button'</span>, {'{'} name: <span class="text-lab-300">'Add to cart'</span> {'}'}).click();
-  <span class="text-purple-300">await</span> page.getByRole(<span class="text-lab-300">'link'</span>, {'{'} name: <span class="text-lab-300">'Checkout'</span> {'}'}).click();
-
-  <span class="text-purple-300">await</span> expect(page.getByTestId(<span class="text-lab-300">'total'</span>)).toHaveText(<span class="text-lab-300">'$49.00'</span>);
-{'}'});
-
-<span class="text-slate-500">// ✓ 1 passed (2.3s)  chromium · firefox · webkit</span></code></pre>
+      <div class="min-w-0 lg:col-span-6">
+        <div class="animate-float">
+          <LiveCode />
         </div>
-        <p class="mt-4 text-center text-xs text-slate-400">This is what week 4 looks like. Week 1 is “what is a variable?”</p>
+        <p class="mt-5 text-center text-xs text-dim">This is what week 4 looks like. Week 1 is “what is a variable?”</p>
       </div>
     </div>
   </section>
 
   <!-- Four pillars -->
-  <section class="container-x py-16 sm:py-20">
-    <SectionHeading eyebrow="One place for QA" title="Everything a tester needs, in one place" subtitle="Most of it is free. The live courses are for when you want to go deep with guidance." align="center" />
+  <section class="container-x py-16 sm:py-24">
+    <div class="reveal"><SectionHeading eyebrow="One place for QA" title="Everything a tester needs, in one place" subtitle="Most of it is free. The live courses are for when you want to go deep with guidance." align="center" /></div>
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {pillars.map((p) => (
         <a href={p.href} target={p.external ? '_blank' : undefined} rel={p.external ? 'noopener' : undefined} class="card group">
-          <span class="inline-flex rounded-xl bg-lab-500/10 p-3 text-lab-700"><Icon name={p.icon} /></span>
-          <h3 class="mt-5 text-lg font-bold text-navy-900">{p.title}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">{p.body}</p>
-          <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-lab-700 group-hover:gap-2 transition-all">{p.cta} <span aria-hidden="true">→</span></span>
+          <span class="inline-flex rounded-xl bg-accent-500/15 p-3 text-accent-300"><Icon name={p.icon} /></span>
+          <h3 class="mt-5 text-lg font-bold text-ink">{p.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
+          <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-lab-300 transition-all group-hover:gap-2">{p.cta} <span aria-hidden="true">→</span></span>
         </a>
       ))}
     </div>
   </section>
 
   <!-- Topics strip -->
-  <section class="border-y border-slate-200 bg-navy-50 py-10">
+  <section class="border-y border-line bg-surface-2 py-10">
     <div class="container-x">
-      <p class="text-center text-sm font-semibold uppercase tracking-wider text-slate-500">What we cover</p>
+      <p class="text-center text-xs font-semibold uppercase tracking-wider text-dim">What we cover</p>
       <ul class="mt-6 flex flex-wrap justify-center gap-3">
         {topics.map((t) => (
-          <li><a href="/library" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-navy-900 hover:border-lab-500"><Icon name={t.icon} class="h-4 w-4 text-lab-600" />{t.name}</a></li>
+          <li><a href="/library" class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-ink transition hover:border-accent-500"><Icon name={t.icon} class="h-4 w-4 text-lab-400" />{t.name}</a></li>
         ))}
       </ul>
     </div>
   </section>
 
   <!-- Featured courses -->
-  <section class="container-x py-16 sm:py-20">
-    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+  <section class="container-x py-16 sm:py-24">
+    <div class="reveal flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
       <SectionHeading eyebrow="Live courses" title="Learn by building, not by watching" subtitle="Every course ends with something on your GitHub that you can walk an interviewer through." />
       <a href="/courses" class="btn-ghost shrink-0">All courses</a>
     </div>
@@ -123,9 +111,10 @@ test(<span class="text-lab-300">'guest can complete checkout'</span>, <span clas
   </section>
 
   <!-- Why different -->
-  <section class="bg-navy-900 py-16 text-white sm:py-24">
-    <div class="container-x grid gap-12 lg:grid-cols-2 lg:items-center">
-      <div>
+  <section class="relative overflow-hidden bg-surface-2 py-16 sm:py-24">
+    <div class="absolute right-0 top-0 h-80 w-80 rounded-full bg-accent-600/15 blur-3xl" aria-hidden="true"></div>
+    <div class="container-x relative grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div class="reveal">
         <SectionHeading dark eyebrow="Why QA Tech Labs" title="We teach from real problems, not slides" subtitle="Everything in our courses comes from projects we have shipped and bugs we have chased at 2 AM. Here is what that means for you." />
         <a href="/about" class="btn-primary mt-8">Meet the team</a>
       </div>
@@ -136,10 +125,10 @@ test(<span class="text-lab-300">'guest can complete checkout'</span>, <span clas
           { icon: 'mic', t: 'Interviews, rehearsed', b: 'Mock interviews, question banks and timed practice on interview.qatechlabs.com, included.' },
           { icon: 'brain', t: 'Experience, not theory', b: 'Every topic is taught through a problem we actually hit and how we solved it.' },
         ].map((f) => (
-          <li class="rounded-2xl border border-white/10 bg-white/5 p-6">
+          <li class="card">
             <span class="inline-flex rounded-lg bg-lab-500/15 p-2 text-lab-300"><Icon name={f.icon} class="h-5 w-5" /></span>
-            <h3 class="mt-4 font-bold">{f.t}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-slate-300">{f.b}</p>
+            <h3 class="mt-4 font-bold text-ink">{f.t}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{f.b}</p>
           </li>
         ))}
       </ul>
@@ -149,18 +138,18 @@ test(<span class="text-lab-300">'guest can complete checkout'</span>, <span clas
   <Testimonials />
 
   <!-- Latest from the blog -->
-  <section class="container-x py-16 sm:py-20">
-    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+  <section class="container-x py-16 sm:py-24">
+    <div class="reveal flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
       <SectionHeading eyebrow="Blog" title="Latest from the lab" />
       <a href="/blog" class="btn-ghost shrink-0">All posts</a>
     </div>
     <div class="mt-10 grid gap-6 md:grid-cols-3">
       {posts.map((p) => (
         <a href={`/blog/${p.id}`} class="card group">
-          <span class="text-xs font-semibold uppercase tracking-wider text-lab-700">{p.data.topic}</span>
-          <h3 class="mt-3 text-lg font-bold text-navy-900 group-hover:text-lab-700">{p.data.title}</h3>
-          <p class="mt-2 text-sm text-slate-600">{p.data.description}</p>
-          <p class="mt-4 text-xs text-slate-500">{p.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} · {p.data.readingTime}</p>
+          <span class="text-xs font-semibold uppercase tracking-wider text-lab-300">{p.data.topic}</span>
+          <h3 class="mt-3 text-lg font-bold text-ink group-hover:text-lab-300">{p.data.title}</h3>
+          <p class="mt-2 text-sm text-muted">{p.data.description}</p>
+          <p class="mt-4 text-xs text-dim">{p.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} · {p.data.readingTime}</p>
         </a>
       ))}
     </div>

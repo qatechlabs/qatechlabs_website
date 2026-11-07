@@ -1,0 +1,36 @@
+---
+/** Slowly rising columns of faded code behind the hero. Purely decorative. */
+const snippets = [
+  "await page.goto('/login');",
+  "expect(res.status()).toBe(200);",
+  "const user = await api.createUser();",
+  "await page.getByRole('button', { name: 'Save' }).click();",
+  "test.describe('checkout', () => {",
+  "SELECT id, status FROM orders WHERE total > 100;",
+  "k6 run --vus 200 --duration 5m load.js",
+  "await expect(page).toHaveURL(/dashboard/);",
+  "const schema = z.object({ id: z.string() });",
+  "agent.use(playwrightMCP);",
+  "await page.route('**/analytics', r => r.abort());",
+  "http_req_duration p(95) < 500ms ✓",
+  "await mcp.callTool('browser_snapshot');",
+  "expect(await db.count('users')).toBe(1);",
+  "await page.screenshot({ fullPage: true });",
+  "GET /api/orders/123 → 404 Not Found",
+  "await expect(locator).toBeVisible();",
+  "npx playwright test --shard=1/4",
+  "const prompt = 'Generate edge cases for…';",
+  "await page.clock.setFixedTime('2026-01-01');",
+];
+const cols = [0, 1, 2, 3].map((i) => [...snippets.slice(i * 5), ...snippets.slice(0, i * 5)]);
+---
+<div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  <div class="absolute inset-0 grid grid-cols-2 gap-10 px-6 opacity-[0.1] lg:grid-cols-4 lg:px-12">
+    {cols.map((col, i) => (
+      <div class="animate-rise font-mono text-[12px] leading-[2.4] text-lab-300 whitespace-nowrap" style={`animation-duration:${55 + i * 12}s; animation-delay:-${i * 9}s`}>
+        {[...col, ...col].map((s) => <div>{s}</div>)}
+      </div>
+    ))}
+  </div>
+  <div class="absolute inset-0" style="background: radial-gradient(ellipse at 25% 45%, var(--color-base) 0%, rgb(7 9 15 / .6) 35%, transparent 70%)"></div>
+</div>

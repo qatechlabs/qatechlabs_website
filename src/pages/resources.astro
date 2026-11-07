@@ -9,40 +9,40 @@ const free = all.filter((r) => r.data.access === 'free');
 const paid = all.filter((r) => r.data.access === 'paid');
 ---
 <Base title="Resources and downloads" description="Free cheat sheets, templates and checklists for QA engineers, plus paid starter projects, question banks and ebooks.">
-  <section class="bg-navy-50 py-16">
+  <section class="bg-surface-2 py-16">
     <div class="container-x">
       <SectionHeading eyebrow="Resources" title="Downloads that save you a week" subtitle="Cheat sheets and templates are free. Starter projects, question banks and ebooks are paid and fund the free library." />
     </div>
   </section>
 
   <section class="container-x py-14">
-    <h2 class="flex items-center gap-2 text-2xl font-bold text-navy-900"><Icon name="download" class="h-6 w-6 text-lab-600" />Free</h2>
+    <h2 class="flex items-center gap-2 text-2xl font-bold text-ink"><Icon name="download" class="h-6 w-6 text-lab-400" />Free</h2>
     <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
       {free.map((r) => (
         <article class="card flex flex-col">
-          <span class="text-xs font-semibold uppercase tracking-wider text-lab-700">{r.data.type}</span>
-          <h3 class="mt-2 font-bold text-navy-900">{r.data.title}</h3>
-          <p class="mt-2 flex-1 text-sm text-slate-600">{r.data.description}</p>
+          <span class="text-xs font-semibold uppercase tracking-wider text-lab-300">{r.data.type}</span>
+          <h3 class="mt-2 font-bold text-ink">{r.data.title}</h3>
+          <p class="mt-2 flex-1 text-sm text-muted">{r.data.description}</p>
           <a href={r.data.link || `/contact?resource=${encodeURIComponent(r.data.title)}`} class="btn-ghost mt-5 w-full">{r.data.link ? 'Download' : 'Get it by email'}</a>
         </article>
       ))}
     </div>
 
-    <h2 class="mt-16 flex items-center gap-2 text-2xl font-bold text-navy-900"><Icon name="lock" class="h-6 w-6 text-amber-500" />Premium</h2>
+    <h2 class="mt-16 flex items-center gap-2 text-2xl font-bold text-ink"><Icon name="lock" class="h-6 w-6 text-amber-500" />Premium</h2>
     <div class="mt-6 grid gap-6 md:grid-cols-3">
       {paid.map((r) => (
-        <article class="card flex flex-col border-amber-200">
+        <article class="card flex flex-col border-amber-500/40">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold uppercase tracking-wider text-amber-600">{r.data.type}</span>
-            <span class="text-lg font-bold text-navy-900">${r.data.price}</span>
+            <span class="text-lg font-bold text-ink">${r.data.price}</span>
           </div>
-          <h3 class="mt-2 font-bold text-navy-900">{r.data.title}</h3>
-          <p class="mt-2 flex-1 text-sm text-slate-600">{r.data.description}</p>
+          <h3 class="mt-2 font-bold text-ink">{r.data.title}</h3>
+          <p class="mt-2 flex-1 text-sm text-muted">{r.data.description}</p>
           <a href={r.data.link || `/contact?resource=${encodeURIComponent(r.data.title)}`} target={r.data.link ? '_blank' : undefined} rel={r.data.link ? 'noopener' : undefined} class="btn-dark mt-5 w-full">Buy now</a>
         </article>
       ))}
     </div>
-    <p class="mt-8 text-sm text-slate-500">Everything premium is included free when you enrol in a course.</p>
+    <p class="mt-8 text-sm text-dim">Everything premium is included free when you enrol in a course.</p>
   </section>
   <CTA />
 </Base>

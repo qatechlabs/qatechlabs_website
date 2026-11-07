@@ -17,7 +17,7 @@ const enrolHref = d.paymentLink || `/contact?course=${encodeURIComponent(d.short
 const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 <Base title={d.shortTitle} description={d.summary} type="article">
-  <section class="bg-navy-950 py-16 text-white">
+  <section class="bg-base py-16 text-white">
     <div class="container-x grid gap-10 lg:grid-cols-3">
       <div class="min-w-0 lg:col-span-2">
         <a href="/courses" class="text-sm text-slate-400 hover:text-white">← All courses</a>
@@ -31,10 +31,10 @@ const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numer
           {d.tools.map((t) => <li class="rounded-md border border-white/15 bg-white/5 px-2.5 py-1 font-mono text-xs">{t}</li>)}
         </ul>
       </div>
-      <aside class="rounded-2xl border border-white/10 bg-navy-900 p-6 shadow-glow lg:sticky lg:top-24 lg:self-start">
+      <aside class="rounded-2xl border border-white/10 bg-surface p-6 shadow-glow lg:sticky lg:top-24 lg:self-start">
         <p class="text-sm text-slate-400">Course fee</p>
-        <p class="mt-1 text-4xl font-extrabold">${d.price} {d.originalPrice && <span class="ml-1 text-lg font-normal text-slate-500 line-through">${d.originalPrice}</span>}</p>
-        <p class="mt-1 text-xs text-slate-500">{site.payments.currencyNote}</p>
+        <p class="mt-1 text-4xl font-extrabold">${d.price} {d.originalPrice && <span class="ml-1 text-lg font-normal text-dim line-through">${d.originalPrice}</span>}</p>
+        <p class="mt-1 text-xs text-dim">{site.payments.currencyNote}</p>
         <a href={enrolHref} target={d.paymentLink ? '_blank' : undefined} rel={d.paymentLink ? 'noopener' : undefined} class="btn-primary mt-6 w-full">Enrol now</a>
         <a href={`/contact?course=${encodeURIComponent(d.shortTitle)}`} class="btn-ghost-light mt-3 w-full">Ask a question</a>
         <ul class="mt-6 space-y-2 text-sm text-slate-300">
@@ -49,29 +49,29 @@ const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numer
 
   <section class="container-x grid gap-12 py-14 lg:grid-cols-3">
     <div class="lg:col-span-2">
-      <h2 class="text-2xl font-bold text-navy-900">What you will be able to do</h2>
+      <h2 class="text-2xl font-bold text-ink">What you will be able to do</h2>
       <ul class="mt-5 grid gap-3 sm:grid-cols-2">
-        {d.outcomes.map((o) => <li class="flex gap-3 rounded-xl border border-slate-200 p-4 text-sm text-slate-700"><Icon name="check" class="h-5 w-5 shrink-0 text-lab-600" />{o}</li>)}
+        {d.outcomes.map((o) => <li class="flex gap-3 rounded-xl border border-line p-4 text-sm text-muted-strong"><Icon name="check" class="h-5 w-5 shrink-0 text-lab-400" />{o}</li>)}
       </ul>
       <article class="prose-ql mt-6"><Content /></article>
     </div>
     <div>
-      <h2 class="text-xl font-bold text-navy-900">Upcoming batches</h2>
+      <h2 class="text-xl font-bold text-ink">Upcoming batches</h2>
       {courseBatches.length ? courseBatches.map((b) => (
         <div class="card mt-4">
-          <p class="font-semibold text-navy-900">Starts {fmt(b.starts)}</p>
-          <p class="mt-1 text-sm text-slate-600">{b.schedule}</p>
-          <p class="mt-1 text-sm text-slate-600">{b.duration} · {b.mode}</p>
-          <p class="mt-2 text-xs font-semibold text-lab-700">{b.seats} seats</p>
+          <p class="font-semibold text-ink">Starts {fmt(b.starts)}</p>
+          <p class="mt-1 text-sm text-muted">{b.schedule}</p>
+          <p class="mt-1 text-sm text-muted">{b.duration} · {b.mode}</p>
+          <p class="mt-2 text-xs font-semibold text-lab-300">{b.seats} seats</p>
           <a href={enrolHref} target={d.paymentLink ? '_blank' : undefined} rel={d.paymentLink ? 'noopener' : undefined} class="btn-dark mt-4 w-full">Reserve a seat</a>
         </div>
       )) : (
         <div class="card mt-4">
-          <p class="text-sm text-slate-600">No batch scheduled yet. Join the waitlist and we will tell you first.</p>
+          <p class="text-sm text-muted">No batch scheduled yet. Join the waitlist and we will tell you first.</p>
           <a href={`/contact?course=${encodeURIComponent(d.shortTitle)}&intent=waitlist`} class="btn-dark mt-4 w-full">Join the waitlist</a>
         </div>
       )}
-      <a href="/batches" class="mt-4 block text-sm font-semibold text-lab-700 hover:underline">See all batches →</a>
+      <a href="/batches" class="mt-4 block text-sm font-semibold text-lab-300 hover:underline">See all batches →</a>
     </div>
   </section>
   <CTA title="Questions before you enrol?" body="We reply within a day, usually faster. Tell us about your background and we will say honestly whether this course is right for you." />

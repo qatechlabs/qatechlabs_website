@@ -1,0 +1,92 @@
+---
+/** Terminal card that "types" a Playwright test, runs it, and loops. */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<div class={`rounded-2xl border border-white/10 bg-surface/80 shadow-glow backdrop-blur ${cls}`}>
+  <div class="flex items-center gap-1.5 border-b border-white/5 px-4 py-2.5">
+    <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span><span class="h-2.5 w-2.5 rounded-full bg-amber-400/80"></span><span class="h-2.5 w-2.5 rounded-full bg-pass/80"></span>
+    <span class="ml-3 font-mono text-xs text-dim">tests/checkout.spec.ts</span>
+    <span class="ml-auto font-mono text-[10px] text-dim" id="lc-status">● typing</span>
+  </div>
+  <pre class="h-[300px] overflow-hidden p-4 font-mono text-[12.5px] leading-[1.7] text-ink sm:text-[13px]" aria-live="off"><code id="lc-code"></code><span id="lc-cursor" class="inline-block h-[1.1em] w-[7px] translate-y-[3px] bg-lab-400 animate-blink"></span></pre>
+</div>
+
+<script>
+  const lines = [
+    { t: "import { test, expect } from '@playwright/test';", c: 'kw' },
+    { t: '', c: '' },
+    { t: "test('guest can complete checkout', async ({ page, api }) => {", c: 'fn' },
+    { t: "  const product = await api.createProduct({ price: 49 });", c: '' },
+    { t: "  await page.goto(`/p/${product.slug}`);", c: '' },
+    { t: "  await page.getByRole('button', { name: 'Add to cart' }).click();", c: '' },
+    { t: "  await page.getByRole('link', { name: 'Checkout' }).click();", c: '' },
+    { t: "  await expect(page.getByTestId('total')).toHaveText('$49.00');", c: '' },
+    { t: '});', c: '' },
+  ];
+  const results = [
+    '',
+    '$ npx playwright test checkout --project=chromium,firefox,webkit',
+    '',
+    '  ✓  [chromium] guest can complete checkout (2.3s)',
+    '  ✓  [firefox]  guest can complete checkout (2.8s)',
+    '  ✓  [webkit]   guest can complete checkout (3.1s)',
+    '',
+    '  3 passed (4.2s)',
+  ];
+
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const colour = (s: string) =>
+    s.replace(
+      /('[^']*'|`[^`]*`)|\b(import|from|async|await|const)\b|\b(test|expect)\b|\b(\d+)\b|(✓)|(\d+ passed.*)/g,
+      (m, str, kw, fn, num, tick, pass) => {
+        const e = esc(m);
+        if (str) return `<span class="text-lab-300">${e}</span>`;
+        if (kw) return `<span class="text-accent-300">${e}</span>`;
+        if (fn || num) return `<span class="text-amber-400">${e}</span>`;
+        if (tick) return `<span class="text-pass">${e}</span>`;
+        if (pass) return `<span class="text-pass font-semibold">${e}</span>`;
+        return e;
+      },
+    ).replace(/([^>])(<)(?!\/?span)/g, '$1&lt;');
+
+  const code = document.getElementById('lc-code')!;
+  const cursor = document.getElementById('lc-cursor')!;
+  const status = document.getElementById('lc-status')!;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  async function run() {
+    if (reduce) {
+      code.innerHTML = [...lines.map((l) => l.t), ...results].map(colour).join('\n');
+      cursor.style.display = 'none';
+      status.textContent = '✓ 3 passed';
+      return;
+    }
+    for (;;) {
+      code.innerHTML = '';
+      status.textContent = '● typing';
+      let html = '';
+      for (const line of lines) {
+        let typed = '';
+        for (const ch of line.t) {
+          typed += ch;
+          code.innerHTML = html + colour(typed);
+          await sleep(ch === ' ' ? 12 : 22 + Math.random() * 30);
+        }
+        html += colour(line.t) + '\n';
+        code.innerHTML = html;
+        await sleep(120);
+      }
+      status.textContent = '● running';
+      for (const r of results) {
+        await sleep(r.startsWith('  ✓') ? 650 : 250);
+        html += colour(r) + '\n';
+        code.innerHTML = html;
+      }
+      status.textContent = '✓ 3 passed';
+      await sleep(5000);
+    }
+  }
+  run();
+</script>

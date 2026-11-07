@@ -6,7 +6,7 @@ import CTA from '../components/CTA.astro';
 import { site } from '../config/site';
 ---
 <Base title="About" description="QA Tech Labs was started by working QA engineers to teach testing the way it is actually done: real projects, real problems, and honest guidance.">
-  <section class="bg-navy-950 py-16 text-white">
+  <section class="bg-base py-16 text-white">
     <div class="container-x">
       <SectionHeading dark eyebrow="About" title="Built by testers who got tired of tutorials" subtitle="QA Tech Labs exists because most QA training teaches tools in isolation. Real work is messy: requirements change, environments break, and the bug is never where the error says it is. We teach that." />
     </div>
@@ -33,22 +33,22 @@ import { site } from '../config/site';
         { icon: 'sparkles', t: 'AI-native', b: 'Agents, MCP servers and AI-assisted testing are part of every course, not a bolt-on.' },
       ].map((f) => (
         <div class="card">
-          <span class="inline-flex rounded-lg bg-lab-500/10 p-2 text-lab-700"><Icon name={f.icon} class="h-5 w-5" /></span>
-          <h3 class="mt-4 font-bold text-navy-900">{f.t}</h3>
-          <p class="mt-2 text-sm text-slate-600">{f.b}</p>
+          <span class="inline-flex rounded-lg bg-accent-500/15 p-2 text-lab-300"><Icon name={f.icon} class="h-5 w-5" /></span>
+          <h3 class="mt-4 font-bold text-ink">{f.t}</h3>
+          <p class="mt-2 text-sm text-muted">{f.b}</p>
         </div>
       ))}
     </div>
   </section>
 
-  <section class="bg-navy-50 py-16">
+  <section class="bg-surface-2 py-16">
     <div class="container-x">
       <SectionHeading eyebrow="Founder" title={site.founder} subtitle="QA engineer, trainer and the person who reviews your code every week." />
       <div class="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center">
-        <div class="flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl bg-navy-900 text-3xl font-extrabold text-lab-400" aria-hidden="true">KK</div>
-        <p class="max-w-2xl text-slate-700">Karthik has built UI, API and performance automation for product teams, mentored testers into their first automation roles, and now teaches full time at QA Tech Labs. He believes the best way to understand testing is to build the thing you are testing, which is why every course starts with an application, not a slide deck.</p>
+        <div class="flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl bg-surface text-3xl font-extrabold text-lab-400" aria-hidden="true">KK</div>
+        <p class="max-w-2xl text-muted-strong">Karthik has built UI, API and performance automation for product teams, mentored testers into their first automation roles, and now teaches full time at QA Tech Labs. He believes the best way to understand testing is to build the thing you are testing, which is why every course starts with an application, not a slide deck.</p>
       </div>
-      <p class="mt-6 text-sm text-slate-500">Photo and full bio coming soon.</p>
+      <p class="mt-6 text-sm text-dim">Photo and full bio coming soon.</p>
     </div>
   </section>
   <CTA />

@@ -3,10 +3,10 @@ import Logo from './Logo.astro';
 import { site } from '../config/site';
 const year = new Date().getFullYear();
 ---
-<footer class="bg-navy-950 text-slate-300">
+<footer class="bg-surface-2 text-slate-300">
   <div class="container-x grid gap-10 py-14 md:grid-cols-4">
     <div class="md:col-span-1">
-      <Logo light />
+      <Logo />
       <p class="mt-4 text-sm leading-relaxed text-slate-400">{site.tagline} Real projects, real problems, and the people who solved them.</p>
       <div class="mt-5 flex gap-3">
         <a href={site.social.youtube} target="_blank" rel="noopener" aria-label="YouTube" class="rounded-md bg-white/5 p-2 hover:bg-white/10"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></a>
@@ -47,7 +47,7 @@ const year = new Date().getFullYear();
     </div>
   </div>
   <div class="border-t border-white/10">
-    <div class="container-x flex flex-col gap-2 py-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+    <div class="container-x flex flex-col gap-2 py-6 text-xs text-dim sm:flex-row sm:items-center sm:justify-between">
       <p>© {year} QA Tech Labs. All rights reserved.</p>
       <p>Built with Astro. Tested, naturally.</p>
     </div>

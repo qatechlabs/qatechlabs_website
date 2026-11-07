@@ -1,16 +1,25 @@
 ---
-interface Props { light?: boolean; class?: string }
-const { light = false, class: cls = '' } = Astro.props;
+/**
+ * QA Tech Labs mark: a "Q" drawn as a continuous test loop whose tail
+ * becomes a check mark (quality), with a node at the top-right (AI / tech).
+ * Gradient runs violet -> cyan, the brand accent.
+ */
+interface Props { class?: string; size?: number; wordmark?: boolean; light?: boolean }
+const { class: cls = '', size = 36, wordmark = true } = Astro.props;
+const id = 'qtl-' + Math.random().toString(36).slice(2, 7);
 ---
-<a href="/" class={`inline-flex items-center gap-2.5 ${cls}`} aria-label="QA Tech Labs home">
-  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-    <rect width="36" height="36" rx="9" class={light ? 'fill-lab-500' : 'fill-navy-900'} />
-    <!-- flask -->
-    <path d="M14 8h8M16 8v7l-5.5 10a2 2 0 0 0 1.75 3h11.5a2 2 0 0 0 1.75-3L20 15V8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class={light ? 'stroke-navy-950' : 'stroke-white'} />
-    <!-- check inside flask -->
-    <path d="M14.5 22.5l2.2 2.2 4.8-4.8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class={light ? 'stroke-navy-950' : 'stroke-lab-400'} />
+<a href="/" class={`group inline-flex items-center gap-2.5 ${cls}`} aria-label="QA Tech Labs home">
+  <svg width={size} height={size} viewBox="0 0 48 48" fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id={id} x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#a78bfa" />
+        <stop offset="1" stop-color="#22d3ee" />
+      </linearGradient>
+    </defs>
+    <path d="M33.4 35.6A15 15 0 1 1 36.9 29.3" stroke={`url(#${id})`} stroke-width="4.5" stroke-linecap="round" />
+    <path d="M24 26l6.5 6.5L45 18" stroke={`url(#${id})`} stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="39.5" cy="8.5" r="3.2" fill="#22d3ee" />
+    <circle cx="39.5" cy="8.5" r="6" stroke="#22d3ee" stroke-opacity=".35" stroke-width="1.5" />
   </svg>
-  <span class={`text-lg font-bold tracking-tight ${light ? 'text-white' : 'text-navy-900'}`}>
-    QA Tech <span class={light ? 'text-lab-400' : 'text-lab-600'}>Labs</span>
-  </span>
+  {wordmark && <span class="font-display text-[19px] font-bold tracking-tight text-ink">QA Tech Labs</span>}
 </a>
