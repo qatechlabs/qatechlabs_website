@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CTA from '../components/CTA.astro';
+import { site } from '../config/site';
+---
+<Base title="About" description="QA Tech Labs was started by working QA engineers to teach testing the way it is actually done: real projects, real problems, and honest guidance.">
+  <section class="bg-navy-950 py-16 text-white">
+    <div class="container-x">
+      <SectionHeading dark eyebrow="About" title="Built by testers who got tired of tutorials" subtitle="QA Tech Labs exists because most QA training teaches tools in isolation. Real work is messy: requirements change, environments break, and the bug is never where the error says it is. We teach that." />
+    </div>
+  </section>
+
+  <section class="container-x grid gap-12 py-16 lg:grid-cols-2">
+    <div class="prose-ql">
+      <h2 class="!mt-0">Our story</h2>
+      <p>QA Tech Labs was founded by {site.founder}, a QA engineer who spent years building test automation and performance frameworks for product teams, and even more years answering the same questions from colleagues: how do I move into automation, which tool should I learn, how do I prepare for interviews.</p>
+      <p>The answers were always the same: learn by building something real, understand the application you are testing, and rehearse before the interview. So we built a place that does exactly that.</p>
+      <h2>What we believe</h2>
+      <ul>
+        <li><strong>Knowledge should be free.</strong> The library and recordings are free and will stay free. Courses pay for them.</li>
+        <li><strong>You learn by building.</strong> Every course has one continuous project and a GitHub repo you own.</li>
+        <li><strong>Experience beats theory.</strong> We teach from problems we actually hit, and how we solved them.</li>
+        <li><strong>AI is a tool for testers, not a threat.</strong> We teach you to build with it and to test it.</li>
+      </ul>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {[
+        { icon: 'globe', t: 'Global by default', b: 'Learners across India, the Middle East, Europe and North America. Batches are scheduled across timezones.' },
+        { icon: 'code', t: 'Playwright + TypeScript first', b: 'Our main automation stack, because it is what modern teams are hiring for.' },
+        { icon: 'mic', t: 'interview.qatechlabs.com', b: 'Our own interview practice platform with question banks and mock interviews.' },
+        { icon: 'sparkles', t: 'AI-native', b: 'Agents, MCP servers and AI-assisted testing are part of every course, not a bolt-on.' },
+      ].map((f) => (
+        <div class="card">
+          <span class="inline-flex rounded-lg bg-lab-500/10 p-2 text-lab-700"><Icon name={f.icon} class="h-5 w-5" /></span>
+          <h3 class="mt-4 font-bold text-navy-900">{f.t}</h3>
+          <p class="mt-2 text-sm text-slate-600">{f.b}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-navy-50 py-16">
+    <div class="container-x">
+      <SectionHeading eyebrow="Founder" title={site.founder} subtitle="QA engineer, trainer and the person who reviews your code every week." />
+      <div class="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center">
+        <div class="flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl bg-navy-900 text-3xl font-extrabold text-lab-400" aria-hidden="true">KK</div>
+        <p class="max-w-2xl text-slate-700">Karthik has built UI, API and performance automation for product teams, mentored testers into their first automation roles, and now teaches full time at QA Tech Labs. He believes the best way to understand testing is to build the thing you are testing, which is why every course starts with an application, not a slide deck.</p>
+      </div>
+      <p class="mt-6 text-sm text-slate-500">Photo and full bio coming soon.</p>
+    </div>
+  </section>
+  <CTA />
+</Base>

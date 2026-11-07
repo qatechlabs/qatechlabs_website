@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Brand: deep navy + lab green */
+  --color-navy-950: #070d1a;
+  --color-navy-900: #0b1324;
+  --color-navy-800: #111c33;
+  --color-navy-700: #1a2a4a;
+  --color-navy-600: #253a66;
+  --color-navy-100: #e6ebf5;
+  --color-navy-50: #f4f6fb;
+
+  --color-lab-300: #7ef0c2;
+  --color-lab-400: #45e3a4;
+  --color-lab-500: #19c98a;
+  --color-lab-600: #0fa06d;
+  --color-lab-700: #0b7a53;
+
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+
+  --shadow-glow: 0 0 0 1px rgb(25 201 138 / 0.25), 0 20px 60px -20px rgb(25 201 138 / 0.45);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-slate-700 antialiased font-sans;
+}
+
+.container-x {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-500 focus-visible:ring-offset-2;
+}
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-500 focus-visible:ring-offset-2 bg-lab-500 text-navy-950 hover:bg-lab-400 shadow-sm;
+}
+.btn-dark {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-500 focus-visible:ring-offset-2 bg-navy-900 text-white hover:bg-navy-800;
+}
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-500 focus-visible:ring-offset-2 border border-slate-200 bg-white text-navy-900 hover:border-navy-900;
+}
+.btn-ghost-light {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-500 focus-visible:ring-offset-2 border border-white/20 text-white hover:bg-white/10;
+}
+
+.eyebrow {
+  @apply inline-flex items-center gap-2 rounded-full border border-lab-500/30 bg-lab-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-lab-700;
+}
+.eyebrow-dark {
+  @apply inline-flex items-center gap-2 rounded-full border border-lab-400/30 bg-lab-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-lab-300;
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Long-form content (blog, course detail) */
+.prose-ql {
+  @apply text-slate-700 leading-relaxed;
+}
+.prose-ql h2 { @apply mt-10 mb-4 text-2xl font-bold text-navy-900; }
+.prose-ql h3 { @apply mt-8 mb-3 text-xl font-semibold text-navy-900; }
+.prose-ql p { @apply my-4; }
+.prose-ql ul { @apply my-4 list-disc pl-6 space-y-1; }
+.prose-ql ol { @apply my-4 list-decimal pl-6 space-y-1; }
+.prose-ql a { @apply text-lab-700 underline underline-offset-2 hover:text-lab-600; }
+.prose-ql blockquote { @apply my-6 border-l-4 border-lab-500 pl-4 italic text-slate-600; }
+.prose-ql code { @apply rounded bg-navy-50 px-1.5 py-0.5 font-mono text-[0.9em] text-navy-900; }
+.prose-ql pre { @apply my-6 overflow-x-auto rounded-xl bg-navy-900 p-4 text-sm text-slate-100; }
+.prose-ql pre code { @apply bg-transparent p-0 text-inherit; }
+.prose-ql table { @apply my-6 w-full text-sm; }
+.prose-ql th { @apply border-b border-slate-200 py-2 text-left font-semibold text-navy-900; }
+.prose-ql td { @apply border-b border-slate-100 py-2; }

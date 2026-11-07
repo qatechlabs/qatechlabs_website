@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found">
+  <section class="container-x py-28 text-center">
+    <p class="font-mono text-sm text-lab-700">expect(page).toHaveURL(...)  ✗</p>
+    <h1 class="mt-4 text-4xl font-extrabold text-navy-900">404. This page failed the test.</h1>
+    <p class="mt-4 text-slate-600">The page you were looking for does not exist or moved. Let's get you back on a green path.</p>
+    <div class="mt-8 flex justify-center gap-3">
+      <a href="/" class="btn-primary">Home</a>
+      <a href="/library" class="btn-ghost">Browse the library</a>
+    </div>
+  </section>
+</Base>

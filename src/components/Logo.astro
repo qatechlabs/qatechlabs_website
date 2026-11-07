@@ -1,0 +1,16 @@
+---
+interface Props { light?: boolean; class?: string }
+const { light = false, class: cls = '' } = Astro.props;
+---
+<a href="/" class={`inline-flex items-center gap-2.5 ${cls}`} aria-label="QA Tech Labs home">
+  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+    <rect width="36" height="36" rx="9" class={light ? 'fill-lab-500' : 'fill-navy-900'} />
+    <!-- flask -->
+    <path d="M14 8h8M16 8v7l-5.5 10a2 2 0 0 0 1.75 3h11.5a2 2 0 0 0 1.75-3L20 15V8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class={light ? 'stroke-navy-950' : 'stroke-white'} />
+    <!-- check inside flask -->
+    <path d="M14.5 22.5l2.2 2.2 4.8-4.8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class={light ? 'stroke-navy-950' : 'stroke-lab-400'} />
+  </svg>
+  <span class={`text-lg font-bold tracking-tight ${light ? 'text-white' : 'text-navy-900'}`}>
+    QA Tech <span class={light ? 'text-lab-400' : 'text-lab-600'}>Labs</span>
+  </span>
+</a>
