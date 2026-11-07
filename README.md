@@ -31,6 +31,16 @@ Create a payment link in Razorpay or Stripe for each course and paste it into th
 
 Create a free form at https://formspree.io, copy the endpoint into `site.formEndpoint`. Until then the form opens the visitor's email app.
 
+### AI assistant (chat widget)
+
+The floating "Ask QA Tech Labs AI" widget calls `/api/chat`, a serverless function that uses the Claude API with the site's own course, batch, resource and FAQ content as context. It hands off to the contact page or WhatsApp for anything it cannot answer.
+
+1. Create an API key at https://console.anthropic.com.
+2. In Vercel → Settings → Environment Variables add `ANTHROPIC_API_KEY`. Locally, copy `.env.example` to `.env`.
+3. Model and limits live at the top of `src/pages/api/chat.ts`.
+
+Until the key is set, the widget shows "The assistant is not configured yet" and points to the contact page.
+
 ## Deploy (Vercel)
 
 1. Import this repo at https://vercel.com/new (framework is detected automatically).

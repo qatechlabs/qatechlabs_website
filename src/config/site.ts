@@ -81,6 +81,14 @@ export const batches = [
   },
 ];
 
+/** Sample numbers for the animated counters on the home page. Replace with real ones. */
+export const stats = [
+  { value: 1200, suffix: '+', label: 'Testers trained' },
+  { value: 40, suffix: '+', label: 'Hours of free recordings' },
+  { value: 18, suffix: '', label: 'Countries' },
+  { value: 92, suffix: '%', label: 'Finish with a project on GitHub' },
+];
+
 /** Sample testimonials. Replace with real ones as they come in. */
 export const testimonials = [
   {

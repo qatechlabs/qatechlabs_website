@@ -1,0 +1,27 @@
+---
+import SectionHeading from './SectionHeading.astro';
+const faqs = [
+  { q: 'I have never coded. Can I join the Playwright course?', a: 'Yes. Week one is a TypeScript bootcamp written for testers. About half of every batch starts with zero coding experience.' },
+  { q: 'Is the library really free?', a: 'Yes, and it stays free. Guides, cheat sheets, templates and full session recordings are free. Live courses and a few premium downloads are paid, and they fund the free side.' },
+  { q: 'What if I miss a live session?', a: 'Every session is recorded and uploaded the same day. You keep lifetime access to the recordings, slides and code.' },
+  { q: 'Do you help with interviews?', a: 'Every course includes at least one mock interview, and you get access to interview.qatechlabs.com for question banks and timed practice.' },
+  { q: 'Which timezones do batches run in?', a: 'Batches are scheduled in IST with evening and weekend slots that also suit Europe and the Middle East. We add US-friendly slots when there is demand. Tell us your timezone on the contact page.' },
+  { q: 'Can I pay in INR?', a: 'Yes. Prices on the site are in USD. Message us on WhatsApp for INR pricing and instalment options.' },
+];
+---
+<section class="container-x py-16 sm:py-24">
+  <div class="reveal"><SectionHeading eyebrow="FAQ" title="Questions people ask before joining" align="center" /></div>
+  <div class="mx-auto mt-10 max-w-3xl divide-y divide-line rounded-2xl border border-line bg-surface">
+    {faqs.map((f) => (
+      <details class="group px-6 py-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink">
+          {f.q}
+          <span class="shrink-0 rounded-full border border-line p-1 text-lab-400 transition group-open:rotate-45" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-muted">{f.a}</p>
+      </details>
+    ))}
+  </div>
+</section>

@@ -7,6 +7,9 @@ import Testimonials from '../components/Testimonials.astro';
 import CTA from '../components/CTA.astro';
 import LiveCode from '../components/LiveCode.astro';
 import CodeRain from '../components/CodeRain.astro';
+import Marquee from '../components/Marquee.astro';
+import Stats from '../components/Stats.astro';
+import FAQ from '../components/FAQ.astro';
 import { getCollection } from 'astro:content';
 import { site, batches } from '../config/site';
 
@@ -57,11 +60,6 @@ const topics = [
           <a href="/library" class="btn-primary">Start learning free</a>
           <a href="/courses" class="btn-ghost-light">Explore live courses</a>
         </div>
-        <dl class="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8 text-sm">
-          <div><dt class="text-dim">Disciplines</dt><dd class="mt-1 font-display text-2xl font-bold">6</dd></div>
-          <div><dt class="text-dim">Live sessions / batch</dt><dd class="mt-1 font-display text-2xl font-bold">Up to 24</dd></div>
-          <div><dt class="text-dim">Learners</dt><dd class="mt-1 font-display text-2xl font-bold">Global</dd></div>
-        </dl>
       </div>
       <div class="min-w-0 lg:col-span-6">
         <div class="animate-float">
@@ -71,6 +69,8 @@ const topics = [
       </div>
     </div>
   </section>
+
+  <Marquee />
 
   <!-- Four pillars -->
   <section class="container-x py-16 sm:py-24">
@@ -86,6 +86,8 @@ const topics = [
       ))}
     </div>
   </section>
+
+  <Stats />
 
   <!-- Topics strip -->
   <section class="border-y border-line bg-surface-2 py-10">
@@ -154,6 +156,8 @@ const topics = [
       ))}
     </div>
   </section>
+
+  <FAQ />
 
   <CTA />
 </Base>

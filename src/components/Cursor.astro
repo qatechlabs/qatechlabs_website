@@ -1,0 +1,49 @@
+---
+/**
+ * Custom cursor: a crisp dot that tracks the pointer and a soft ring that
+ * lags behind it. The ring grows over links and buttons, pulses on click,
+ * and the native cursor is hidden. Disabled on touch devices and for
+ * users who prefer reduced motion.
+ */
+---
+<div id="cur-dot" class="cur" aria-hidden="true"></div>
+<div id="cur-ring" class="cur" aria-hidden="true"></div>
+
+<style is:global>
+  .cur { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; opacity: 0; will-change: transform; }
+  #cur-dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 9999px; background: var(--color-lab-400); box-shadow: 0 0 12px var(--color-lab-400); }
+  #cur-ring { width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 9999px; border: 1.5px solid rgb(167 139 250 / .8); transition: width .25s, height .25s, margin .25s, border-color .25s, background-color .25s; }
+  html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor [role=button], html.has-cursor input, html.has-cursor select, html.has-cursor textarea, html.has-cursor label { cursor: none !important; }
+  html.has-cursor .cur { opacity: 1; }
+  #cur-ring.hover { width: 56px; height: 56px; margin: -28px 0 0 -28px; border-color: var(--color-lab-400); background: rgb(34 211 238 / .08); }
+  #cur-ring.down { width: 24px; height: 24px; margin: -12px 0 0 -12px; }
+  #cur-dot.down { transform: scale(2); }
+</style>
+
+<script>
+  const fine = matchMedia('(pointer: fine)').matches;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (fine && !reduce) {
+    const dot = document.getElementById('cur-dot')!;
+    const ring = document.getElementById('cur-ring')!;
+    let x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y, shown = false;
+    addEventListener('mousemove', (e) => {
+      x = e.clientX; y = e.clientY;
+      dot.style.transform = `translate(${x}px, ${y}px)`;
+      if (!shown) { document.documentElement.classList.add('has-cursor'); shown = true; }
+    }, { passive: true });
+    addEventListener('mouseleave', () => document.documentElement.classList.remove('has-cursor'));
+    addEventListener('mouseenter', () => shown && document.documentElement.classList.add('has-cursor'));
+    const tick = () => {
+      rx += (x - rx) * 0.18; ry += (y - ry) * 0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      requestAnimationFrame(tick);
+    };
+    tick();
+    const sel = 'a, button, [role=button], input, select, textarea, label, summary';
+    addEventListener('mouseover', (e) => { if ((e.target as Element).closest(sel)) ring.classList.add('hover'); });
+    addEventListener('mouseout', (e) => { if ((e.target as Element).closest(sel)) ring.classList.remove('hover'); });
+    addEventListener('mousedown', () => { ring.classList.add('down'); dot.classList.add('down'); });
+    addEventListener('mouseup', () => { ring.classList.remove('down'); dot.classList.remove('down'); });
+  }
+</script>
