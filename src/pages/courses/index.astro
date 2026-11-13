@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import CourseCard from '../../components/CourseCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../config/site';
+const courses = (await getCollection('courses')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Courses" description="Live, project-based QA courses: Playwright + TypeScript automation, manual testing, API, database, performance testing and AI for QA engineers.">
+  <section class="bg-surface-2 py-16">
+    <div class="container-x">
+      <SectionHeading eyebrow="Live courses" title="Pick a path. Build something real." subtitle="Small live batches, recordings for life, weekly code reviews and mock interviews. Every course ends with a project on your GitHub." />
+    </div>
+  </section>
+  <section class="container-x py-14">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {courses.map((c) => <CourseCard course={c} />)}
+    </div>
+    <p class="mt-8 text-sm text-dim">{site.payments.currencyNote}</p>
+  </section>
+  <section class="container-x pb-8">
+    <div class="rounded-2xl border border-line p-8 md:flex md:items-center md:justify-between md:gap-8">
+      <div>
+        <h2 class="text-xl font-bold text-ink">Not sure which course fits?</h2>
+        <p class="mt-2 text-muted">Tell us where you are and where you want to be. We will suggest a path, and we will tell you honestly if you do not need a paid course yet.</p>
+      </div>
+      <a href="/contact" class="btn-dark mt-6 shrink-0 md:mt-0">Get a recommendation</a>
+    </div>
+  </section>
+  <CTA />
+</Base>

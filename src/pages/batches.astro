@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CTA from '../components/CTA.astro';
+import { getCollection } from 'astro:content';
+import { site, batches, formatPrice } from '../config/site';
+
+const courses = await getCollection('courses');
+const upcoming = batches
+  .filter((b) => new Date(b.starts) >= new Date())
+  .sort((a, b) => a.starts.localeCompare(b.starts))
+  .map((b) => ({ ...b, data: courses.find((c) => c.id === b.course)?.data }));
+const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+
+const recordings = [
+  { title: 'Playwright from zero: your first test in 40 minutes', meta: 'Automation · 42 min' },
+  { title: 'Test design techniques every manual tester must know', meta: 'Manual · 58 min' },
+  { title: 'HTTP for testers: status codes, auth and headers explained', meta: 'API · 35 min' },
+  { title: 'SQL JOINs explained with a real bug', meta: 'Database · 29 min' },
+  { title: 'Building a full-stack app with an AI agent (live)', meta: 'AI for QA · 1 hr 12 min' },
+  { title: 'Reading a k6 report: p95, throughput and what to say to your PM', meta: 'Performance · 38 min' },
+];
+---
+<Base title="Upcoming batches and free recordings" description="Dates and schedules for the next live QA Tech Labs batches, plus free full-length recordings from past sessions.">
+  <section class="bg-surface-2 py-16">
+    <div class="container-x">
+      <SectionHeading eyebrow="Batches" title="Upcoming live batches" subtitle="All sessions are live online and recorded. Times are shown in IST with a US equivalent where useful. Seats are capped so everyone gets code reviewed." />
+    </div>
+  </section>
+
+  <section class="container-x py-14">
+    <div class="grid gap-6">
+      {upcoming.map((b) => (
+        <article class="card md:flex md:items-center md:justify-between md:gap-8">
+          <div class="flex gap-5">
+            <div class="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-xl bg-surface text-white">
+              <span class="text-2xl font-extrabold">{new Date(b.starts).getDate()}</span>
+              <span class="text-xs uppercase tracking-wider text-lab-400">{new Date(b.starts).toLocaleDateString('en-GB', { month: 'short' })}</span>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-ink">{b.title}</h2>
+              <p class="mt-1 text-sm text-muted"><Icon name="calendar" class="mr-1 inline h-4 w-4 text-slate-400" />Starts {fmt(b.starts)} · {b.duration}</p>
+              <p class="mt-1 text-sm text-muted">{b.schedule}</p>
+              <p class="mt-1 text-sm text-muted">{b.mode} · {b.seats} seats</p>
+            </div>
+          </div>
+          <div class="mt-6 flex shrink-0 flex-col gap-2 md:mt-0 md:items-end">
+            {b.data && <span class="text-xl font-bold text-ink">{formatPrice(b.data.price)}</span>}
+            <a href={b.data ? `/courses/${b.course}#enrol` : `/contact?course=${encodeURIComponent(b.title)}`} class="btn-primary">Reserve a seat</a>
+            <a href={`/courses/${b.course}`} class="text-sm font-semibold text-lab-300 hover:underline">Course details →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="mt-8 text-sm text-dim">Do not see a time that works? <a href="/contact" class="font-semibold text-lab-300 hover:underline">Tell us your timezone</a> and we will plan the next batch around demand.</p>
+  </section>
+
+  <section id="recordings" class="bg-surface py-16 text-white sm:py-20">
+    <div class="container-x">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <SectionHeading dark eyebrow="Free recordings" title="Watch full sessions, free" subtitle="Complete recordings from past batches. No sign-up, no trailer, the whole session. New ones are added after every batch." />
+        <a href={site.recordingsUrl} target="_blank" rel="noopener" class="btn-primary shrink-0">Open the playlist ↗</a>
+      </div>
+      <ul class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {recordings.map((r) => (
+          <li>
+            <a href={site.recordingsUrl} target="_blank" rel="noopener" class="group flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 hover:bg-white/10">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-500 text-ink group-hover:bg-lab-400"><Icon name="play" class="h-5 w-5" /></span>
+              <span>
+                <span class="block font-semibold">{r.title}</span>
+                <span class="mt-1 block text-sm text-slate-400">{r.meta}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 text-sm text-slate-400">Recordings for the full course, with the project files and code reviews, are included when you join a batch.</p>
+    </div>
+  </section>
+  <CTA />
+</Base>

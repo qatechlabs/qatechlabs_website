@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CTA from '../components/CTA.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const resources = await getCollection('resources');
+
+const tracks = [
+  {
+    slug: 'manual', icon: 'clipboard', name: 'Manual Testing', blurb: 'Fundamentals, test design, bug reporting, Agile.',
+    topics: ['SDLC and STLC', 'Test levels and types', 'Test design techniques', 'Writing test cases', 'Bug reports that get fixed', 'Agile and Scrum for QA', 'Exploratory testing', 'Accessibility basics'],
+    course: 'manual-testing-foundations', tag: 'Manual',
+  },
+  {
+    slug: 'automation', icon: 'bolt', name: 'Automation with Playwright + TypeScript', blurb: 'From your first TypeScript file to a CI pipeline.',
+    topics: ['TypeScript for testers', 'Locators and auto-waiting', 'Fixtures and Page Objects', 'Authentication and test data', 'Visual and accessibility testing', 'GitHub Actions and sharding', 'Flaky test strategy', 'Selenium and Cypress compared'],
+    course: 'playwright-typescript-automation', tag: 'Automation',
+  },
+  {
+    slug: 'selenium', icon: 'code', name: 'Selenium with Java and Cucumber BDD', blurb: 'WebDriver, TestNG, POM, Maven, Jenkins and BDD.',
+    topics: ['Core Java for testers', 'Locators, XPath and waits', 'TestNG and data providers', 'Page Object Model', 'Maven and Jenkins', 'Gherkin and feature files', 'Step definitions and hooks', 'Cucumber reports'],
+    course: 'selenium-java-automation', extra: { href: '/courses/cucumber-bdd', label: 'Cucumber BDD course →' }, tag: 'Selenium',
+  },
+  {
+    slug: 'api', icon: 'server', name: 'API Testing', blurb: 'HTTP, REST, Postman and automation in Java and TypeScript.',
+    topics: ['HTTP and status codes', 'Authentication: Basic, Bearer, OAuth2', 'Postman collections and scripts', 'Newman in CI', 'Rest Assured with Java', 'API tests in Playwright', 'Schema validation', 'Mocking'],
+    course: 'api-testing-postman', extra: { href: '/courses/rest-api-automation-java', label: 'RestAPI Automation course →' }, tag: 'API',
+  },
+  {
+    slug: 'database', icon: 'database', name: 'Database and SQL', blurb: 'Verify the data, not just the screen.',
+    topics: ['SELECT, WHERE, JOIN', 'Aggregations and window functions', 'Transactions and constraints', 'Test data setup and teardown', 'MongoDB basics', 'ETL and migration testing', 'DB assertions in automation'],
+    course: null, tag: 'Database',
+  },
+  {
+    slug: 'performance', icon: 'gauge', name: 'Performance Testing', blurb: 'Load, stress and soak with k6 and JMeter.',
+    topics: ['Load vs stress vs soak', 'Percentiles and throughput', 'k6 scripting and thresholds', 'JMeter correlation', 'Grafana dashboards', 'Finding the bottleneck', 'Performance in CI'],
+    course: null, tag: 'Performance',
+  },
+  {
+    slug: 'ai', icon: 'sparkles', name: 'AI for QA', blurb: 'Agents, MCP servers and building apps with AI.',
+    topics: ['How LLMs work, for testers', 'Prompting with context', 'Coding agents', 'MCP servers and Playwright MCP', 'Generating and reviewing tests', 'Testing AI features', 'Evals'],
+    course: null, tag: 'AI for QA',
+  },
+  {
+    slug: 'career', icon: 'mic', name: 'Career and Interviews', blurb: 'Resumes, roadmaps, mock interviews.',
+    topics: ['Manual to SDET roadmap', 'Resume for QA roles', 'Common interview questions', 'Take-home assignments', 'Salary negotiation', 'Mock interview practice'],
+    course: null, interview: true, tag: 'Career',
+  },
+];
+---
+<Base title="QA Library" description="A free, structured library covering manual testing, Selenium with Java, Cucumber BDD, Playwright + TypeScript automation, API, database, performance testing, AI for QA and QA careers.">
+  <section class="bg-base py-16 text-white">
+    <div class="container-x">
+      <SectionHeading dark eyebrow="Free library" title="Everything about QA, organised" subtitle="Eight tracks, from first principles to advanced. Each track links to guides, free recordings, downloads and the live course if you want to go deeper. New guides land every week." />
+    </div>
+  </section>
+
+  <section class="container-x py-14">
+    <div class="grid gap-6 md:grid-cols-2">
+      {tracks.map((t) => {
+        const tPosts = posts.filter((p) => p.data.topic === t.tag);
+        const tRes = resources.filter((r) => r.data.topic === t.tag);
+        return (
+          <article id={t.slug} class="card scroll-mt-24">
+            <div class="flex items-start gap-4">
+              <span class="rounded-xl bg-surface p-3 text-lab-400"><Icon name={t.icon} /></span>
+              <div>
+                <h2 class="text-xl font-bold text-ink">{t.name}</h2>
+                <p class="mt-1 text-sm text-muted">{t.blurb}</p>
+              </div>
+            </div>
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {t.topics.map((x) => <li class="rounded-md bg-surface-2 px-2.5 py-1 text-xs font-medium text-ink">{x}</li>)}
+            </ul>
+            {(tPosts.length > 0 || tRes.length > 0) && (
+              <ul class="mt-5 space-y-2 border-t border-line pt-4 text-sm">
+                {tPosts.map((p) => <li><a href={`/blog/${p.id}`} class="flex items-center gap-2 text-ink hover:text-lab-300"><Icon name="book" class="h-4 w-4 text-slate-400" />{p.data.title}</a></li>)}
+                {tRes.map((r) => <li><a href="/resources" class="flex items-center gap-2 text-ink hover:text-lab-300"><Icon name={r.data.access === 'free' ? 'download' : 'lock'} class="h-4 w-4 text-slate-400" />{r.data.title}</a></li>)}
+              </ul>
+            )}
+            <div class="mt-5 flex flex-wrap gap-3 text-sm font-semibold">
+              {t.course && <a href={`/courses/${t.course}`} class="text-lab-300 hover:underline">Live course →</a>}
+              {t.extra && <a href={t.extra.href} class="text-lab-300 hover:underline">{t.extra.label}</a>}
+              {t.interview && <a href="https://interview.qatechlabs.com" target="_blank" rel="noopener" class="text-lab-300 hover:underline">Practise interviews ↗</a>}
+              <a href="/batches#recordings" class="text-dim hover:text-ink">Free recordings</a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+  <CTA title="Want the guided version?" body="The library is free forever. When you want a mentor, a cohort and a project with weekly code review, join a live batch." />
+</Base>

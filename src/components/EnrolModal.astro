@@ -1,0 +1,121 @@
+---
+/**
+ * Enrolment + Razorpay Checkout. Any element with [data-enrol] opens it.
+ * Opening /courses/<slug>#enrol opens it straight away (used by the Batches page).
+ */
+import { formatPrice, site } from '../config/site';
+interface Props { courseId: string; courseTitle: string; shortTitle: string; price: number }
+const { courseId, courseTitle, shortTitle, price } = Astro.props;
+const contactHref = `/contact?course=${encodeURIComponent(shortTitle)}`;
+const input = 'mt-1.5 w-full rounded-lg border border-line bg-surface-2 px-3 py-2.5 text-base text-ink focus:border-lab-500 focus:outline-none focus:ring-2 focus:ring-lab-500/30';
+---
+<dialog id="enrol-dialog" class="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-line bg-surface p-0 text-ink shadow-glow backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+  data-course={courseId} data-title={courseTitle} data-contact={contactHref} data-name={site.name}>
+  <form id="enrol-form" method="dialog" class="p-6 sm:p-8" novalidate>
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-lab-300">Enrol</p>
+        <h2 class="mt-1 text-xl font-bold">{courseTitle}</h2>
+        <p class="mt-1 text-2xl font-extrabold">{formatPrice(price)}</p>
+      </div>
+      <button type="button" id="enrol-close" class="rounded-full border border-line p-1.5 text-muted hover:text-ink" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="mt-6 grid gap-4">
+      <label class="block text-sm font-medium">Full name
+        <input required name="name" autocomplete="name" maxlength="120" class={input} />
+      </label>
+      <label class="block text-sm font-medium">Email (your receipt goes here)
+        <input required name="email" type="email" autocomplete="email" maxlength="120" class={input} />
+      </label>
+      <label class="block text-sm font-medium">WhatsApp / phone
+        <input required name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" pattern="[+\d][\d\s\-]{6,18}" placeholder="+91 98765 43210" class={input} />
+      </label>
+    </div>
+    <p id="enrol-error" class="mt-4 hidden rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300" role="alert"></p>
+    <button id="enrol-pay" type="submit" class="btn-primary mt-6 w-full">Pay {formatPrice(price)} securely</button>
+    <p class="mt-3 text-center text-xs text-dim">UPI, cards, net banking and wallets via Razorpay. {site.payments.currencyNote.split('.')[0]}.</p>
+    <a href={contactHref} class="mt-2 block text-center text-xs text-lab-300 hover:underline">Have a question first? Talk to us</a>
+  </form>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('enrol-dialog') as HTMLDialogElement | null;
+  if (dialog) {
+    const form = document.getElementById('enrol-form') as HTMLFormElement;
+    const errorBox = document.getElementById('enrol-error')!;
+    const pay = document.getElementById('enrol-pay') as HTMLButtonElement;
+    const payLabel = pay.textContent;
+    const { course, title, contact, name: brand } = dialog.dataset;
+
+    const showError = (html: string) => { errorBox.innerHTML = html; errorBox.classList.remove('hidden'); };
+    const busy = (on: boolean, label = 'Opening secure checkout…') => { pay.disabled = on; pay.textContent = on ? label : payLabel; };
+
+    const open = () => { errorBox.classList.add('hidden'); dialog.showModal(); };
+    document.querySelectorAll('[data-enrol]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); open(); }));
+    document.getElementById('enrol-close')!.addEventListener('click', () => dialog.close());
+    if (location.hash === '#enrol') open();
+
+    let sdk: Promise<void> | null = null;
+    const loadSdk = () => (sdk ??= new Promise<void>((resolve, reject) => {
+      if ((window as any).Razorpay) return resolve();
+      const s = document.createElement('script');
+      s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      s.onload = () => resolve();
+      s.onerror = () => { sdk = null; reject(new Error('sdk')); };
+      document.head.appendChild(s);
+    }));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.add('hidden');
+      if (!form.reportValidity()) return;
+      const fd = new FormData(form);
+      const details = { name: String(fd.get('name')), email: String(fd.get('email')), phone: String(fd.get('phone')) };
+      busy(true);
+      try {
+        const [res] = await Promise.all([
+          fetch('/api/razorpay/order', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ course, ...details }) }),
+          loadSdk(),
+        ]);
+        const order = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          busy(false);
+          if (order.error === 'not_configured') return showError(`Online payment is being set up. Please <a class="underline" href="${contact}&intent=enrol">contact us</a> and we will send you a payment link today.`);
+          if (order.error === 'invalid_details') return showError('Please check your name, email and phone number.');
+          return showError(`We could not start the payment. Please try again, or <a class="underline" href="${contact}">contact us</a>.`);
+        }
+        const rzp = new (window as any).Razorpay({
+          key: order.keyId,
+          order_id: order.orderId,
+          amount: order.amount,
+          currency: order.currency,
+          name: brand,
+          description: order.courseTitle,
+          image: `${location.origin}/favicon.svg`,
+          prefill: { name: details.name, email: details.email, contact: details.phone },
+          notes: { course },
+          theme: { color: '#7c3aed' },
+          modal: { ondismiss: () => busy(false) },
+          handler: async (r: Record<string, string>) => {
+            busy(true, 'Confirming your payment…');
+            const v = await fetch('/api/razorpay/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(r) })
+              .then((x) => x.json()).catch(() => ({ ok: false }));
+            const q = new URLSearchParams({ course: String(title), pid: r.razorpay_payment_id });
+            if (v.ok) location.href = `/payment/success?${q}`;
+            else { busy(false); showError(`We received a response from Razorpay but could not confirm it. Your payment ID is <strong>${r.razorpay_payment_id}</strong>. Please <a class="underline" href="${contact}">contact us</a> with it and we will sort it out.`); }
+          },
+        });
+        rzp.on('payment.failed', (r: any) => {
+          busy(false);
+          showError(`Payment failed: ${r?.error?.description ?? 'please try again'}. No money was taken; if it was, it is refunded automatically by your bank.`);
+        });
+        rzp.open();
+      } catch {
+        busy(false);
+        showError(`Could not load the payment window. Check your connection and try again, or <a class="underline" href="${contact}">contact us</a>.`);
+      }
+    });
+  }
+</script>

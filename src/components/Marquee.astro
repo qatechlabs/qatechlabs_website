@@ -1,0 +1,23 @@
+---
+/** Infinite horizontal strip of the tools we teach. */
+const tools = [
+  'Playwright', 'TypeScript', 'Selenium', 'Java', 'TestNG', 'Cucumber BDD', 'Maven', 'Jenkins', 'Postman', 'REST Assured', 'k6', 'JMeter',
+  'PostgreSQL', 'MongoDB', 'GitHub Actions', 'Docker', 'Allure', 'Jira', 'Claude Code', 'MCP servers', 'Appium', 'GraphQL',
+];
+---
+<div class="relative overflow-hidden border-y border-line bg-surface-2 py-5" aria-label="Tools we teach">
+  <div class="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-surface-2 to-transparent"></div>
+  <div class="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-surface-2 to-transparent"></div>
+  <div class="marquee flex w-max gap-3">
+    {[...tools, ...tools].map((t) => (
+      <span class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 font-mono text-sm text-muted-strong">
+        <span class="h-1.5 w-1.5 rounded-full bg-lab-400"></span>{t}
+      </span>
+    ))}
+  </div>
+</div>
+<style>
+  .marquee { animation: marquee 50s linear infinite; }
+  .marquee:hover { animation-play-state: paused; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+</style>

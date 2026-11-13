@@ -1,0 +1,42 @@
+---
+/**
+ * Animated counters. Numbers are SAMPLE figures: replace in src/config/site.ts
+ * (stats array) before launch.
+ */
+import { stats } from '../config/site';
+---
+<section class="container-x py-12">
+  <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {stats.map((s) => (
+      <div class="card text-center">
+        <dd class="font-display text-4xl font-bold text-ink">
+          <span data-count={s.value} data-suffix={s.suffix ?? ''}>0{s.suffix ?? ''}</span>
+        </dd>
+        <dt class="mt-2 text-sm text-muted">{s.label}</dt>
+      </div>
+    ))}
+  </dl>
+</section>
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = (n: number) => n.toLocaleString('en-US');
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      io.unobserve(e.target);
+      const el = e.target as HTMLElement;
+      const target = Number(el.dataset.count);
+      const suffix = el.dataset.suffix ?? '';
+      if (reduce) { el.textContent = fmt(target) + suffix; continue; }
+      const start = performance.now(), dur = 1600;
+      const step = (t: number) => {
+        const p = Math.min(1, (t - start) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(Math.round(target * eased)) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-count]').forEach((el) => io.observe(el));
+</script>

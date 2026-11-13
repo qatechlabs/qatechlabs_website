@@ -1,0 +1,21 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { testimonials } from '../config/site';
+---
+<section class="bg-surface-2 py-16 sm:py-20">
+  <div class="container-x">
+    <SectionHeading eyebrow="Learners" title="People who changed their careers here" subtitle="Sample stories from the kind of learners we work with. Real testimonials will replace these as batches graduate." align="center" />
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      {testimonials.map((t) => (
+        <figure class="card">
+          <svg class="h-7 w-7 text-lab-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 5C4.3 5 2 7.4 2 10.4c0 2.7 2 4.9 4.6 5.3-.5 1.6-1.6 2.9-3.2 3.6l.8 1.7c4.3-1.4 6.8-5 6.8-9.4C11 7.9 9.4 5 7.2 5zm10 0c-2.9 0-5.2 2.4-5.2 5.4 0 2.7 2 4.9 4.6 5.3-.5 1.6-1.6 2.9-3.2 3.6l.8 1.7c4.3-1.4 6.8-5 6.8-9.4C21 7.9 19.4 5 17.2 5z"/></svg>
+          <blockquote class="mt-4 text-muted-strong">{t.quote}</blockquote>
+          <figcaption class="mt-5 border-t border-line pt-4 text-sm">
+            <span class="font-semibold text-ink">{t.name}</span>
+            <span class="block text-dim">{t.role}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
