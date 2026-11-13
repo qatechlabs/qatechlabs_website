@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { formatPrice } from '../config/site';
 import type { CollectionEntry } from 'astro:content';
 interface Props { course: CollectionEntry<'courses'> }
 const { course } = Astro.props;
@@ -18,8 +19,8 @@ const d = course.data;
   <div class="mt-5 flex items-center justify-between border-t border-line pt-4 text-sm">
     <span class="text-dim">{d.duration}</span>
     <span class="font-bold text-ink">
-      ${d.price}
-      {d.originalPrice && <span class="ml-1 text-xs font-normal text-slate-400 line-through">${d.originalPrice}</span>}
+      {formatPrice(d.price)}
+      {d.originalPrice && <span class="ml-1 text-xs font-normal text-slate-400 line-through">{formatPrice(d.originalPrice)}</span>}
     </span>
   </div>
 </a>

@@ -26,11 +26,15 @@ export const site = {
   formEndpoint: '', // e.g. 'https://formspree.io/f/abcdwxyz'
 
   /**
-   * Payments. Create payment links in Razorpay (India) and/or Stripe (global)
-   * and paste them per course. Buttons fall back to the contact page when empty.
+   * Payments run through Razorpay Checkout (see src/pages/api/razorpay/*).
+   * Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in the Vercel project
+   * environment variables. Until they are set, Enrol shows a friendly
+   * message and points people to the contact page.
+   * Course prices live in each course's markdown file (price, in INR).
    */
   payments: {
-    currencyNote: 'Prices shown in USD. INR pricing available for India, ask us on WhatsApp.',
+    currency: 'INR',
+    currencyNote: 'All fees are in Indian Rupees (INR), inclusive of applicable taxes. Pay securely with UPI, cards, net banking or wallets via Razorpay.',
   },
 
   /** Free recordings playlist (YouTube) shown on the Batches page. */
@@ -39,6 +43,9 @@ export const site = {
   /** Optional analytics (Plausible, GA4, etc.). Leave empty to disable. */
   analyticsScript: '',
 };
+
+/** Format a course fee in INR, for example 18500 -> ₹18,500. */
+export const formatPrice = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
 export const nav = [
   { label: 'Library', href: '/library' },
@@ -71,8 +78,8 @@ export const batches = [
     seats: 30,
   },
   {
-    course: 'api-testing-postman-playwright',
-    title: 'API Testing with Postman and Playwright (Live, Weekend)',
+    course: 'api-testing-postman',
+    title: 'API Testing Manual with Postman (Live, Weekend)',
     starts: '2026-12-13',
     schedule: 'Sat and Sun, 6:00 to 8:00 PM IST',
     duration: '4 weeks',
@@ -83,7 +90,7 @@ export const batches = [
 
 /** Sample numbers for the animated counters on the home page. Replace with real ones. */
 export const stats = [
-  { value: 1200, suffix: '+', label: 'Testers trained' },
+  { value: 3000, suffix: '+', label: 'Testers trained' },
   { value: 40, suffix: '+', label: 'Hours of free recordings' },
   { value: 18, suffix: '', label: 'Countries' },
   { value: 92, suffix: '%', label: 'Finish with a project on GitHub' },

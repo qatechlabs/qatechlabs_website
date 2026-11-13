@@ -22,4 +22,4 @@ Knowing *what* to test. Deciding which risks matter. Reading a requirement and s
 2. **Reviewing generated code.** Treat every generated test like a junior colleague's pull request.
 3. **Understanding the stack.** If you can build a small app with an agent, you understand what you are testing at a level most testers never reach.
 
-We teach all three in [AI for QA Engineers](/courses/ai-for-qa-engineers).
+We teach all three in [Playwright + TypeScript (AI Enabled) course](/courses/playwright-typescript-automation).

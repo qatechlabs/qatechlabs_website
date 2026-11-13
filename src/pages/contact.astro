@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { site } from '../config/site';
+import { getCollection } from 'astro:content';
+const courses = (await getCollection('courses')).sort((a, b) => a.data.order - b.data.order);
 const hasEndpoint = Boolean(site.formEndpoint);
 ---
 <Base title="Contact" description="Ask about a course, book a free 15-minute call, request a resource or just say hello. We reply within a day.">
@@ -26,12 +28,7 @@ const hasEndpoint = Boolean(site.formEndpoint);
         </label>
         <label class="block text-sm font-medium text-ink">I am interested in
           <select name="interest" id="interest" class="mt-1.5 w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-base focus:border-lab-500 focus:outline-none focus:ring-2 focus:ring-lab-500/30">
-            <option>Playwright + TypeScript</option>
-            <option>Manual Testing</option>
-            <option>API Testing</option>
-            <option>Database Testing</option>
-            <option>Performance Testing</option>
-            <option>AI for QA</option>
+            {courses.map((c) => <option>{c.data.shortTitle}</option>)}
             <option>A free resource</option>
             <option>Booking a 15-minute call</option>
             <option>Something else</option>

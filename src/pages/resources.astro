@@ -4,6 +4,7 @@ import Icon from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import CTA from '../components/CTA.astro';
 import { getCollection } from 'astro:content';
+import { formatPrice } from '../config/site';
 const all = await getCollection('resources');
 const free = all.filter((r) => r.data.access === 'free');
 const paid = all.filter((r) => r.data.access === 'paid');
@@ -34,7 +35,7 @@ const paid = all.filter((r) => r.data.access === 'paid');
         <article class="card flex flex-col border-amber-500/40">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold uppercase tracking-wider text-amber-600">{r.data.type}</span>
-            <span class="text-lg font-bold text-ink">${r.data.price}</span>
+            <span class="text-lg font-bold text-ink">{formatPrice(r.data.price)}</span>
           </div>
           <h3 class="mt-2 font-bold text-ink">{r.data.title}</h3>
           <p class="mt-2 flex-1 text-sm text-muted">{r.data.description}</p>

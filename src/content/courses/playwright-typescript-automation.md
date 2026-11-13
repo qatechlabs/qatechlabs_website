@@ -1,14 +1,13 @@
 ---
-title: "Playwright + TypeScript Test Automation, End to End"
-shortTitle: "Playwright + TypeScript"
-summary: "Our flagship course. Start from zero TypeScript and finish with a production-grade Playwright framework, CI pipeline and a real application you built and tested yourself."
+title: "Automation Testing: Playwright + TypeScript (AI Enabled) + Rest API"
+shortTitle: "Playwright + TypeScript (AI) + Rest API"
+summary: "Our flagship course. Start from zero TypeScript and finish with a production-grade Playwright framework covering UI and REST API tests, AI-assisted test creation with agents and MCP servers, a CI pipeline and a real application you built and tested yourself."
 level: "All levels"
 duration: "8 weeks, live"
-price: 299
-originalPrice: 399
+price: 18500
 featured: true
-order: 1
-tools: ["Playwright", "TypeScript", "Node.js", "GitHub Actions", "Docker", "Allure"]
+order: 3
+tools: ["Playwright", "TypeScript", "Rest API", "Claude Code / AI agents", "MCP servers", "GitHub Actions"]
 outcomes:
   - "Write TypeScript confidently, even if you have never coded"
   - "Build a Page Object based Playwright framework from an empty folder"
@@ -41,7 +40,7 @@ Rather than toy examples, we build one real project across the whole course:
 | 1 | TypeScript for testers: types, async/await, modules, npm |
 | 2 | Playwright fundamentals: locators, auto-waiting, assertions, trace viewer |
 | 3 | Framework design: fixtures, Page Objects, config, environments |
-| 4 | Test data, authentication state, API testing with Playwright request |
+| 4 | Rest API testing with Playwright request: CRUD, auth, schema validation, test data |
 | 5 | Visual testing, accessibility checks, mobile emulation |
 | 6 | CI/CD with GitHub Actions, Docker, sharding, flaky test strategy |
 | 7 | AI for automation: generating tests, self-healing locators, MCP servers |

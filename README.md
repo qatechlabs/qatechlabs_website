@@ -17,7 +17,7 @@ npm run build    # output in dist/
 | Business details, social links, form endpoint, WhatsApp number, recordings playlist | `src/config/site.ts` |
 | Upcoming batches | `batches` array in `src/config/site.ts` (past dates hide automatically) |
 | Testimonials | `testimonials` array in `src/config/site.ts` |
-| Courses (price, syllabus, payment link) | `src/content/courses/*.md` |
+| Courses (price in INR, syllabus) | `src/content/courses/*.md` |
 | Blog posts | `src/content/blog/*.md` |
 | Downloads / resources | `src/content/resources/*.md` (`access: free` or `paid`, `link` to file or payment page) |
 | Colours and fonts | `src/styles/global.css` (`@theme` block) |
@@ -25,7 +25,13 @@ npm run build    # output in dist/
 
 ### Taking payments
 
-Create a payment link in Razorpay or Stripe for each course and paste it into the course file's `paymentLink`. Until then, "Enrol now" sends people to the contact form with the course pre-filled.
+Course enrolment uses Razorpay Checkout. The price always comes from the course file (`price`, in INR), and the server creates the Razorpay order and verifies the payment signature (`src/pages/api/razorpay/`).
+
+1. In the Razorpay Dashboard, go to Account & Settings, API Keys, and generate a key (use Test mode first).
+2. In Vercel, Settings, Environment Variables, add `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` for Production, then redeploy.
+3. Test with a Test mode key and Razorpay's test UPI/cards, then swap in the Live keys.
+
+Until the keys are set, "Enrol now" shows a message pointing people to the contact page. Every payment appears in the Razorpay Dashboard with the student's name, email, phone and course in its notes.
 
 ### Contact form
 

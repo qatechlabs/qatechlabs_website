@@ -2,8 +2,9 @@
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import CTA from '../../components/CTA.astro';
+import EnrolModal from '../../components/EnrolModal.astro';
 import { getCollection, render } from 'astro:content';
-import { site, batches } from '../../config/site';
+import { site, batches, formatPrice } from '../../config/site';
 
 export async function getStaticPaths() {
   const courses = await getCollection('courses');
@@ -13,7 +14,6 @@ const { course } = Astro.props;
 const d = course.data;
 const { Content } = await render(course);
 const courseBatches = batches.filter((b) => b.course === course.id && new Date(b.starts) >= new Date());
-const enrolHref = d.paymentLink || `/contact?course=${encodeURIComponent(d.shortTitle)}`;
 const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 <Base title={d.shortTitle} description={d.summary} type="article">
@@ -33,9 +33,9 @@ const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numer
       </div>
       <aside class="rounded-2xl border border-white/10 bg-surface p-6 shadow-glow lg:sticky lg:top-24 lg:self-start">
         <p class="text-sm text-slate-400">Course fee</p>
-        <p class="mt-1 text-4xl font-extrabold">${d.price} {d.originalPrice && <span class="ml-1 text-lg font-normal text-dim line-through">${d.originalPrice}</span>}</p>
+        <p class="mt-1 text-4xl font-extrabold">{formatPrice(d.price)} {d.originalPrice && <span class="ml-1 text-lg font-normal text-dim line-through">{formatPrice(d.originalPrice)}</span>}</p>
         <p class="mt-1 text-xs text-dim">{site.payments.currencyNote}</p>
-        <a href={enrolHref} target={d.paymentLink ? '_blank' : undefined} rel={d.paymentLink ? 'noopener' : undefined} class="btn-primary mt-6 w-full">Enrol now</a>
+        <a href="#enrol" data-enrol class="btn-primary mt-6 w-full">Enrol now</a>
         <a href={`/contact?course=${encodeURIComponent(d.shortTitle)}`} class="btn-ghost-light mt-3 w-full">Ask a question</a>
         <ul class="mt-6 space-y-2 text-sm text-slate-300">
           <li class="flex gap-2"><Icon name="check" class="h-5 w-5 shrink-0 text-lab-400" />Live sessions + lifetime recordings</li>
@@ -63,7 +63,7 @@ const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numer
           <p class="mt-1 text-sm text-muted">{b.schedule}</p>
           <p class="mt-1 text-sm text-muted">{b.duration} · {b.mode}</p>
           <p class="mt-2 text-xs font-semibold text-lab-300">{b.seats} seats</p>
-          <a href={enrolHref} target={d.paymentLink ? '_blank' : undefined} rel={d.paymentLink ? 'noopener' : undefined} class="btn-dark mt-4 w-full">Reserve a seat</a>
+          <a href="#enrol" data-enrol class="btn-dark mt-4 w-full">Reserve a seat</a>
         </div>
       )) : (
         <div class="card mt-4">
@@ -74,5 +74,6 @@ const fmt = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numer
       <a href="/batches" class="mt-4 block text-sm font-semibold text-lab-300 hover:underline">See all batches →</a>
     </div>
   </section>
+  <EnrolModal courseId={course.id} courseTitle={d.title} shortTitle={d.shortTitle} price={d.price} />
   <CTA title="Questions before you enrol?" body="We reply within a day, usually faster. Tell us about your background and we will say honestly whether this course is right for you." />
 </Base>

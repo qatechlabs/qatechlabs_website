@@ -4,7 +4,7 @@ import Icon from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import CTA from '../components/CTA.astro';
 import { getCollection } from 'astro:content';
-import { site, batches } from '../config/site';
+import { site, batches, formatPrice } from '../config/site';
 
 const courses = await getCollection('courses');
 const upcoming = batches
@@ -46,8 +46,8 @@ const recordings = [
             </div>
           </div>
           <div class="mt-6 flex shrink-0 flex-col gap-2 md:mt-0 md:items-end">
-            {b.data && <span class="text-xl font-bold text-ink">${b.data.price}</span>}
-            <a href={b.data?.paymentLink || `/contact?course=${encodeURIComponent(b.data?.shortTitle ?? b.title)}`} class="btn-primary">Reserve a seat</a>
+            {b.data && <span class="text-xl font-bold text-ink">{formatPrice(b.data.price)}</span>}
+            <a href={b.data ? `/courses/${b.course}#enrol` : `/contact?course=${encodeURIComponent(b.title)}`} class="btn-primary">Reserve a seat</a>
             <a href={`/courses/${b.course}`} class="text-sm font-semibold text-lab-300 hover:underline">Course details →</a>
           </div>
         </article>
